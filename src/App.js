@@ -174,7 +174,7 @@ function App() {
               className="Tile"
               style={style}
             >
-              {entry.id} | {entry.start} | {entry.duration}
+              {entry.id}
             </div>
           );
         })}
