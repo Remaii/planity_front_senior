@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useLayoutEffect } from "react";
 import { chooseTextColor, randomColor } from "./utils";
 import './App.scss';
 
 function App() {
-  const [entries, setEntries] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState({ state: false });
+  const [size, setSize] = useState([0, 0]); // used to store window size
+  const [entries, setEntries] = useState([]); // used to store data from fake api / input.json
+  const [loading, setLoading] = useState(true); // used to set page in loading mode
+  const [error, setError] = useState({ state: false }); // used to set page in error mode
 
   const load = useCallback(() => {
     setEntries([]);
@@ -28,7 +29,6 @@ function App() {
           });
           // store data
           setEntries(sortedData);
-          setLoading(false);
         })
         .catch(error => {
           console.error('Error fetching JSON:', error);
@@ -38,9 +38,19 @@ function App() {
     }, 1000); // to see loading
   }, []);
 
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   useEffect(() => {
     if (!loading) return;
     load();
+    setLoading(false);
   }, [load, loading]);
 
   if (error.state) {
@@ -158,7 +168,7 @@ function App() {
     return styles;
   };
 
-  const screenHeight = window.innerHeight;
+  const screenHeight = size[1];
   const startTime = 9;
   const endTime = 21;
   const styles = calculateStyles(entries, screenHeight, startTime, endTime);
