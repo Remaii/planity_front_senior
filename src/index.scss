@@ -1,3 +1,6 @@
+$color-light-mode: #ffffff;
+$color-dark-mode: #424242;
+
 body {
   height: 100%;
   width: 100%;
@@ -7,10 +10,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #424242;
+
+  background-color: $color-light-mode;
+  color: #000000;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $color-dark-mode;
+    color: #ffffff;
+  }
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
