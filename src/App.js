@@ -49,8 +49,10 @@ function App() {
 
   useEffect(() => {
     if (!loading) return;
-    load();
-    setLoading(false);
+    return () => {
+      load();
+      setLoading(false);
+    }
   }, [load, loading]);
 
   if (error.state) {
